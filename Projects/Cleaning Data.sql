@@ -116,4 +116,59 @@ FROM layoffs_staging2;
 SELECT COUNT(*) AS total_rows 
 FROM layoffs_staging2;
 
+-- 2. Standardize the Data
+SELECT company, TRIM(company)
+FROM layoffs_staging2;
 
+UPDATE layoffs_staging2
+SET company = TRIM(company);
+
+SELECT DISTINCT industry 
+FROM layoffs_staging2
+ORDER BY 1;
+
+SELECT * 
+FROM layoffs_staging2
+WHERE industry LIKE 'Crypto%';
+
+UPDATE layoffs_staging2
+SET industry = 'Crypto'
+WHERE industry LIKE 'Crypto%';
+
+
+SELECT DISTINCT location
+FROM layoffs_staging2
+ORDER BY 1;
+
+SELECT DISTINCT country
+FROM layoffs_staging2
+ORDER BY 1;
+
+SELECT DISTINCT country
+FROM layoffs_staging2
+WHERE country LIKE 'Unites States%'
+ORDER BY 1;
+
+SELECT DISTINCT country, TRIM(TRAILING '.' FROM country)
+FROM layoffs_staging2
+ORDER BY 1;
+
+UPDATE layoffs_staging2
+SET country = TRIM(TRAILING '.' FROM country)
+WHERE country LIKE 'United States%';
+
+SELECT `date`,
+STR_TO_DATE(`date`, '%m/%d/%Y')  datedate
+FROM layoffs_staging2;
+
+UPDATE layoffs_staging2
+SET `date` = STR_TO_DATE(`date`, '%m/%d/%Y');
+
+SELECT `date`
+FROM layoffs_staging2;
+
+ALTER TABLE layoffs_staging2
+MODIFY COLUMN `date` DATE;
+
+SELECT *
+FROM layoffs_staging2;
